@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:paddingRight="8dp"
-            android:backgroundTint="#9F12B4"
+            android:backgroundTint="@color/toolbar"
             app:srcCompat="@drawable/baseline_check_32"
             tools:layout_editor_absoluteX="214dp"
             tools:layout_editor_absoluteY="2dp"

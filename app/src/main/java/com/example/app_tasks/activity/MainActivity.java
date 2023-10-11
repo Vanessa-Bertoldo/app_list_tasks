@@ -74,11 +74,18 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
 
     @Override
     public boolean onMenuItemClick(MenuItem menuItem) {
-        Toast.makeText(
-                getApplicationContext(),
-                "Item clicado" + menuItem,
-                Toast.LENGTH_SHORT
-        ).show();
+        AlertDialog.Builder alert = new AlertDialog.Builder(MainActivity.this);
+        alert.setTitle("Sair do aplicativo");
+        alert.setMessage("Deseja sair da aplicação?");
+        alert.setNegativeButton("Não", null);
+        alert.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                finish();
+            }
+        });
+        alert.create();
+        alert.show();
         return true;
     }
 
