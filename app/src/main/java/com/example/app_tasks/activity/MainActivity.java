@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        insertdataDatabase();
+        //insertdataDatabase();
 
         fab                     = findViewById(R.id.addNewTask);
         recyclerViewListTasks   = findViewById(R.id.reyclerListTask);
@@ -47,11 +47,11 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     }
 
     public void insertdataDatabase(){
-//        DbHelper db = new DbHelper(getApplicationContext());
-//        ContentValues cv = new ContentValues();
-//        cv.put("name", "Teste");
-//        db.getWritableDatabase().insert("tasks", null, cv);
-    }
+        DbHelper db = new DbHelper(getApplicationContext());
+        ContentValues cv = new ContentValues();
+        cv.put("name", "Teste");
+        db.getWritableDatabase().insert("tasks", null, cv);
+    } //teste insert database
     public void addNewTaskClick(){
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -115,11 +115,13 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
                         new RecyclerItemClickListener.OnItemClickListener() {
                             @Override
                             public void onItemClick(View view, int position) {
-                                Toast.makeText(
-                                        getApplicationContext(),
-                                        "teste",
-                                        Toast.LENGTH_SHORT
-                                ).show();
+                                //recupera tarefa para edição
+                                Task taskSelected   =   listTask.get(position);
+                                //envia a tarefa para a tela de edição
+                                Intent intent = new Intent(MainActivity.this, AddTask.class);
+                                intent.putExtra("taskSelected", taskSelected);
+
+                                startActivity(intent);
                             }
 
                             @Override

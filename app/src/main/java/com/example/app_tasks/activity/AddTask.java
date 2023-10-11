@@ -20,6 +20,7 @@ import com.google.android.material.textfield.TextInputEditText;
 public class AddTask extends AppCompatActivity {
     private TextInputEditText editTask;
     private ImageButton buttonSaveTask;
+    private Task taskActual;
     @SuppressLint({"WrongViewCast", "MissingInflatedId"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,20 +28,63 @@ public class AddTask extends AppCompatActivity {
         setContentView(R.layout.activity_add_task);
         editTask        = findViewById(R.id.txtTask);
         buttonSaveTask  = findViewById(R.id.buttonSaveTask);
+        //recupera a tarefa caso seja edição
+        taskActual      = (Task) getIntent().getSerializableExtra("taskSelected");
+        //configurar tarefa na caixa de texto
+        if(taskActual != null){
+            editTask.setText(taskActual.getNameTask());
+        }
         saveTask();
     }
 
+    public void updateData(){
+
+    }
 
     public void saveTask(){
         buttonSaveTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String nameTask = editTask.getText().toString();
-                if(!nameTask.isEmpty()){
-                    TaskDAO taskDAO = new TaskDAO(getApplicationContext());
-                    Task task = new Task();
+                TaskDAO taskDAO = new TaskDAO(getApplicationContext());
+                Task task = new Task();
+
+                if(taskActual != null){ //update
+                    if(!nameTask.isEmpty()){
+                        task.setNameTask(nameTask);
+                        task.setId(taskActual.getId());
+
+                        //atualizar no banco de dados
+                        if(taskDAO.updateData(task)){
+                            Toast.makeText(
+                                    getApplicationContext(),
+                                    "Sucesso ao salvar tarefa",
+                                    Toast.LENGTH_SHORT
+                            ).show();
+                        } else {
+                            Toast.makeText(
+                                    getApplicationContext(),
+                                    "Erro ao salvar tarefa",
+                                    Toast.LENGTH_SHORT
+                            ).show();
+                        }
+                    }
+                } else { //insert
                     task.setNameTask(nameTask);
-                    taskDAO.saveData(task);
+                    //taskDAO.saveData(task);
+                    if(taskDAO.saveData(task)){
+                        Toast.makeText(
+                                getApplicationContext(),
+                                "Sucesso ao salvar tarefa",
+                                Toast.LENGTH_SHORT
+                        ).show();
+                    } else {
+                        Toast.makeText(
+                                getApplicationContext(),
+                                "Erro ao salvar tarefa",
+                                Toast.LENGTH_SHORT
+                        ).show();
+                    }
                 }
                 finish();
             }

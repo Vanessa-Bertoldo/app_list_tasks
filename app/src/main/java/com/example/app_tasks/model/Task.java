@@ -2,7 +2,7 @@ package com.example.app_tasks.model;
 
 import java.io.Serializable;
 
-public class Task implements Serializable {
+public class Task implements Serializable { //Serializable possibilita o envio de dados entre activitys
     private Long id;
     private String nameTask;
 
