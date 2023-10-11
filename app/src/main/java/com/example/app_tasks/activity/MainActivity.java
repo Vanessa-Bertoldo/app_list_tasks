@@ -20,6 +20,7 @@ import com.example.app_tasks.R;
 import com.example.app_tasks.adapter.TaskAdapter;
 import com.example.app_tasks.helper.DbHelper;
 import com.example.app_tasks.helper.RecyclerItemClickListener;
+import com.example.app_tasks.helper.TaskDAO;
 import com.example.app_tasks.model.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -46,10 +47,10 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     }
 
     public void insertdataDatabase(){
-        DbHelper db = new DbHelper(getApplicationContext());
-        ContentValues cv = new ContentValues();
-        cv.put("name", "Teste");
-        db.getWritableDatabase().insert("tasks", null, cv);
+//        DbHelper db = new DbHelper(getApplicationContext());
+//        ContentValues cv = new ContentValues();
+//        cv.put("name", "Teste");
+//        db.getWritableDatabase().insert("tasks", null, cv);
     }
     public void addNewTaskClick(){
             fab.setOnClickListener(new View.OnClickListener() {
@@ -80,9 +81,16 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
 
     public void loadList(){
         //list task
-        Task task = new Task();
-        task.setNameTask("Ir ao mercado");
-        listTask.add(task);
+        //list test
+        /*
+            Task task = new Task();
+            task.setNameTask("Ir ao mercado");
+            listTask.add(task);
+        */
+        //list to database
+        TaskDAO taskDAO = new TaskDAO(getApplicationContext());
+        listTask = taskDAO.listData();
+
         //config adapter
         taskAdapter = new TaskAdapter(listTask);
         //config reciclerView
@@ -99,7 +107,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
         super.onStart();
     }
 
-    public void clickListTasks(){
+    public void clickListTasks(){ //evento de click das tarefas listadas pelo recycler view
         recyclerViewListTasks.addOnItemTouchListener(
                 new RecyclerItemClickListener(
                         getApplicationContext(),
@@ -107,7 +115,11 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
                         new RecyclerItemClickListener.OnItemClickListener() {
                             @Override
                             public void onItemClick(View view, int position) {
-                                Log.i("clique", "onItemClick");
+                                Toast.makeText(
+                                        getApplicationContext(),
+                                        "teste",
+                                        Toast.LENGTH_SHORT
+                                ).show();
                             }
 
                             @Override

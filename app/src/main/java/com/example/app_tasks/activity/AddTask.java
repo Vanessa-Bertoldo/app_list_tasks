@@ -35,12 +35,14 @@ public class AddTask extends AppCompatActivity {
         buttonSaveTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                TaskDAO taskDAO = new TaskDAO(getApplicationContext());
-                Task task = new Task();
-                String tastText = editTask.getText().toString();
-                Log.i("InformationTask ", tastText);
-                task.setNameTask(tastText);
-                taskDAO.saveData(task);
+                String nameTask = editTask.getText().toString();
+                if(!nameTask.isEmpty()){
+                    TaskDAO taskDAO = new TaskDAO(getApplicationContext());
+                    Task task = new Task();
+                    task.setNameTask(nameTask);
+                    taskDAO.saveData(task);
+                }
+                finish();
             }
         });
     }

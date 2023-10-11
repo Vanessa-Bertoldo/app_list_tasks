@@ -1,13 +1,16 @@
 package com.example.app_tasks.helper;
 
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.example.app_tasks.model.Task;
 
+import java.util.ArrayList;
 import java.util.List;
 
 //DAO é o padrão utilizado para manipulação de dados
@@ -46,6 +49,19 @@ public class TaskDAO implements ITaskDAO{
 
     @Override
     public List<Task> listData() {
-        return null;
+        List<Task> tasks = new ArrayList<>();
+        String sql = "SELECT * FROM " + DbHelper.TABLE_TASKS + ";";
+        Cursor cursor = read.rawQuery(sql, null); //o 2 parametro são os paramentros condicionais de filtro
+        while(cursor.moveToNext()){ //o cursor faz com que as linhas sejam percorridas
+            Task task = new Task();
+            @SuppressLint("Range") Long id     = cursor.getLong(cursor.getColumnIndex("id"));
+            @SuppressLint("Range") String name = cursor.getString(cursor.getColumnIndex("name"));
+
+            task.setId(id);
+            task.setNameTask(name);
+
+            tasks.add(task);
+        }
+        return tasks;
     }
 }
