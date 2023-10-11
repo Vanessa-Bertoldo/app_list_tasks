@@ -54,7 +54,15 @@ public class TaskDAO implements ITaskDAO{
 
     @Override
     public boolean deleteData(Task task) {
-        return false;
+        String[] args = {task.getId().toString()};
+        try{
+            write.delete(DbHelper.TABLE_TASKS, "id=?", args);
+            Log.e("INFO", "Tarefa atualizada com sucesso ");
+        } catch (Exception e){
+            Log.e("INFO", "Erro ao atualizar tarefa " + e.getMessage());
+            return false;
+        }
+        return true;
     }
 
     @Override

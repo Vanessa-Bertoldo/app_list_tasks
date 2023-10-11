@@ -1,11 +1,13 @@
 package com.example.app_tasks.activity;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -32,6 +34,7 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
     private RecyclerView recyclerViewListTasks;
     private TaskAdapter taskAdapter;
     private List<Task> listTask = new ArrayList<>();
+    private Task taskSelected;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -125,9 +128,34 @@ public class MainActivity extends AppCompatActivity implements PopupMenu.OnMenuI
                             }
 
                             @Override
-                            public void onLongItemClick(View view, int position) {
-                                Log.i("clique", "onItemClick");
-
+                            public void onLongItemClick(View view, int position) { //delete
+                                taskSelected = listTask.get(position);
+                                AlertDialog.Builder dialog = new AlertDialog.Builder(MainActivity.this);
+                                dialog.setTitle("Confirmar exclusão");
+                                dialog.setMessage("Deseja excluir a tarefa? ");
+                                dialog.setPositiveButton("Sim", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        TaskDAO taskDAO = new TaskDAO(getApplicationContext());
+                                        if(taskDAO.deleteData(taskSelected)){
+                                            loadList(); //recarrega a lista de tarefas
+                                            Toast.makeText(
+                                                    getApplicationContext(),
+                                                    "Dados excluídos com sucesso",
+                                                    Toast.LENGTH_SHORT
+                                            ).show();
+                                        } else {
+                                            Toast.makeText(
+                                                    getApplicationContext(),
+                                                    "Erro ao exluir dados",
+                                                    Toast.LENGTH_SHORT
+                                            ).show();
+                                        }
+                                    }
+                                });
+                                dialog.setNegativeButton("Não", null);
+                                dialog.create();
+                                dialog.show();
                             }
 
                             @Override

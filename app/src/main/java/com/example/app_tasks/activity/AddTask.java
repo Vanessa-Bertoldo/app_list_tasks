@@ -37,10 +37,6 @@ public class AddTask extends AppCompatActivity {
         saveTask();
     }
 
-    public void updateData(){
-
-    }
-
     public void saveTask(){
         buttonSaveTask.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,6 +86,7 @@ public class AddTask extends AppCompatActivity {
             }
         });
     }
+
 
 //    @Override
 //    public boolean onCreateOptionsMenu(Menu menu) {
