@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">app_tasks</string>
+    <string name="titleToolbar">Lista de tarefas</string>
+</resources>
